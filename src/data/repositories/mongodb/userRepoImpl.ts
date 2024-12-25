@@ -1,8 +1,8 @@
 import { injectable } from 'inversify'
 import {
   CreateParams,
-  UserEntity,
   Query,
+  UserEntity,
 } from '../../../domain/entities/user.entity'
 import IUserRepo from '../../../domain/repositories/userRepo'
 import User, { Mapper } from '../../models/user.model'
@@ -56,10 +56,13 @@ export default class UserRepoImpl implements IUserRepo {
     const deleteUpdates = {}
 
     // remove null values and add them to delete
+   
     for (const [key, value] of Object.entries(values)) {
       if (value === null) {
+         // @ts-ignore
         deleteUpdates[key] = 1
       } else {
+         // @ts-ignore
         updates[key] = value
       }
     }
@@ -116,8 +119,10 @@ export default class UserRepoImpl implements IUserRepo {
   }
 
   async findAll(query: Query): Promise<UserEntity[]> {
+    console.log("heree")
+    console.log(query)
     let queryObj = { ...Mapper.toQuery(query) }
-
+    
     const docs = await User.find(queryObj)
 
     const entities = docs.map((doc) => Mapper.toEntity(doc))

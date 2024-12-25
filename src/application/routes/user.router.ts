@@ -1,12 +1,12 @@
 import { Router } from 'express'
-import Validator from '../middlewares/validators/user.validation'
+import { container } from '../../di/container'
+import { Types } from '../../di/types'
+import UserController from '../controllers/user.controller'
+import AdminRoles from '../middlewares/roles/adminRoles'
 import AuthValidator from '../middlewares/validators/auth.validation'
 import GeneralValidator from '../middlewares/validators/general.validation'
+import Validator from '../middlewares/validators/user.validation'
 import verifyToken from '../middlewares/verifyToken'
-import AdminRoles from '../middlewares/roles/adminRoles'
-import UserController from '../controllers/user.controller'
-import { Types } from '../../di/types'
-import { container } from '../../di/container'
 
 const controller: UserController = container.get<UserController>(
   Types.UserController
@@ -17,9 +17,7 @@ const router = Router()
 router
   .route('/')
   .get(
-    verifyToken,
-    AdminRoles.directorAuth,
-    Validator.getUsers,
+    
     controller.findAllUsers
   )
 

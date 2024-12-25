@@ -1,14 +1,13 @@
 import { Request, Response, Router } from 'express'
-import verifyAuthorization from '../middlewares/apiAuthorization'
 import ResponseMessages from '../../core/utils/constants'
 
+import authRouter from './auth.router'
 import managerRouter from './manager.router'
 import userRouter from './user.router'
-import authRouter from './auth.router'
 
 const router = Router()
 
-router.use(verifyAuthorization)
+// router.use(verifyAuthorization)
 
 router.use('/manager', managerRouter)
 router.use('/user', userRouter)

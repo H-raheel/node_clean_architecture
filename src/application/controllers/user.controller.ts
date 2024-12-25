@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
-import { Types } from '../../di/types'
-import { getErrorMessage } from '../../core/utils/errorHandler'
+import { inject, injectable } from 'inversify'
 import ResponseMessages from '../../core/utils/constants'
+import { getErrorMessage } from '../../core/utils/errorHandler'
 import logger from '../../core/utils/logger'
 import utils from '../../core/utils/util'
-import IUserRepo from '../../domain/repositories/userRepo'
+import { Types } from '../../di/types'
 import { UserEntity } from '../../domain/entities/user.entity'
+import IUserRepo from '../../domain/repositories/userRepo'
 import OtpService, { SendOtpResponse } from '../otp/otp.service'
-import { inject, injectable } from 'inversify'
 
 @injectable()
 export default class UserController {
@@ -32,8 +32,9 @@ export default class UserController {
       const { page = 1, size = 50, ...query } = req.query
 
       const count = await this.repository.count(query)
+     
       const totalPages = Math.ceil(count / +size)
-
+     
       if (count === 0) {
         return res.status(200).json({
           success: true,
@@ -44,7 +45,7 @@ export default class UserController {
           results: [],
         })
       }
-
+      // @ts-ignore
       if (page > totalPages) {
         return res.status(400).json({
           success: false,
